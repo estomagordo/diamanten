@@ -27,6 +27,7 @@ class Game:
             ),
             'Marrakesh': (
                 (0, 2, 'Tangier'),
+                (0, 5, 'Sahara'),
                 (0, 8, 'Dakar'),
                 (2, 1, 'Tangier'),
                 (2, 1, 'Sierra Leone'),
@@ -97,7 +98,8 @@ class Game:
                 (1, 10, 'Saint Helena'),
                 (1, 3, 'Cape Town'),
                 (2, 1, 'Luanda'),
-                (2, 1, 'Cape Town')
+                (2, 1, 'Cape Town'),
+                (2, 1, 'The Gold Coast')
             ),
             'Cape Town': (
                 (0, 4, 'Whale Bay'),
@@ -189,11 +191,12 @@ class Game:
             'Lake Victoria': (
                 (0, 2, 'Bahr el Gazel'),
                 (0, 4, 'Kabalo'),
-                (0, 4, 'Addis Ababa'),
+                (0, 3, 'Addis Ababa'),
                 (0, 5, 'Zanzibar'),
                 (0, 6, 'Mozambique'),
                 (2, 1, 'Suakin'),
-                (2, 1, 'Drakensberg')
+                (2, 1, 'Drakensberg'),
+                (2, 1, 'Cape Guardafui')
             ),
             'Suakin': (
                 (0, 4, 'Darfur'),
@@ -221,7 +224,8 @@ class Game:
             'Tamatave': (
                 (0, 4, 'Cape Sainte Marie'),
                 (1, 8, 'Cape Guardafui'),
-                (2, 1, 'Cape Guardafui')
+                (2, 1, 'Cape Guardafui'),
+                (2, 1, 'Cape Town')
             ),
             'Cape Sainte Marie': (
                 (0, 4, 'Tamatave'),
@@ -253,9 +257,11 @@ class Game:
 def tests():
     game = Game()
     
-    for place in game.places.values():
-        for destination in place:
-            assert destination[2] in game.places, 'Illegal destination name ' + destination[2]
+    for origin, trips in game.places.iteritems():
+        for trip in trips:
+            destination = trip[2]
+            assert destination in game.places, 'Illegal destination name ' + destination[2]
+            assert any(map(lambda backtrip: backtrip == (trip[0], trip[1], origin), game.places[destination])), 'No corresponding route from ' + destination + ' to ' + origin
     
 if __name__ == '__main__':
     tests()
